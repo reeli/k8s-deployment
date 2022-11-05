@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+
+  name: hello-world
+
+spec:
+
+  replicas: 2
+
+  selector:
+
+    matchLabels:
+
+      app: hello-world
+
+  template:
+
+    metadata:
+
+      labels:
+
+        app: hello-world
+      annotations:
+        deployAt: 2020-10-10-v1
+
+    spec:
+
+      containers:
+
+        - image: docker.io/library/nginx:alpine
+
+          name: web
+
+          ports:
+
+            - containerPort: 80
+          volumeMounts:
+            - name: config
+              mountPath: "/usr/share/nginx/html"
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: html
+
+#      volumes:
+#        - name: config
+#          configMap:
+#            name: demo-config
+#            items:
+#              - key: "game.properties"
+#                path: "game.properties"
+#              - key: "user-interface.properties"
+#                path: "user-interface.properties"
